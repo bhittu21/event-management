@@ -1,0 +1,50 @@
+<nav class="bg-indigo-600 text-white shadow-lg">
+    <div class="container mx-auto px-6">
+        <div class="flex items-center justify-between py-5">
+            <!-- Logo -->
+            <a href="{% url 'home' %}" class="text-xl font-bold flex items-center space-x-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>Event Manager</span>
+            </a>
+
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-btn" class="md:hidden p-3 rounded hover:bg-indigo-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+
+            <!-- Navigation Links -->
+            <div id="nav-links" class="hidden md:flex items-center space-x-2">
+                <a href="{% url 'event_list' %}" class="px-5 py-3 rounded-lg hover:bg-indigo-700 transition font-medium">Events</a>
+                <a href="{% url 'category_list' %}" class="px-5 py-3 rounded-lg hover:bg-indigo-700 transition font-medium">Categories</a>
+                <a href="{% url 'participant_list' %}" class="px-5 py-3 rounded-lg hover:bg-indigo-700 transition font-medium">Participants</a>
+                <a href="{% url 'dashboard' %}" class="px-5 py-3 rounded-lg bg-indigo-700 hover:bg-indigo-800 transition font-medium flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden pb-5 px-6">
+        <a href="{% url 'event_list' %}" class="block px-5 py-3 hover:bg-indigo-700 rounded-lg">Events</a>
+        <a href="{% url 'category_list' %}" class="block px-5 py-3 hover:bg-indigo-700 rounded-lg">Categories</a>
+        <a href="{% url 'participant_list' %}" class="block px-5 py-3 hover:bg-indigo-700 rounded-lg">Participants</a>
+        <a href="{% url 'dashboard' %}" class="block px-5 py-3 hover:bg-indigo-700 rounded-lg">Dashboard</a>
+    </div>
+</nav>
+
+<script>
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>

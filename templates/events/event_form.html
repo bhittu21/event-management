@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-10">
+    <!-- Back button -->
+    <a href="{% url 'event_list' %}" class="inline-flex items-center space-x-3 text-indigo-600 hover:text-indigo-800 mb-8">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span class="font-medium">Back to Events</span>
+    </a>
+
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-xl shadow-md p-10">
+            <h1 class="text-2xl font-bold text-gray-800 mb-8">{{ page_title }}</h1>
+
+            <form method="post" class="space-y-8">
+                {% csrf_token %}
+
+                <!-- Name -->
+                <div>
+                    <label class="label">{{ form.name.label }}</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.name.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label class="label">{{ form.description.label }}</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.description.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Date and Time -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="label">{{ form.date.label }}</label>
+                        {{ form.date }}
+                        {% if form.date.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.date.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label class="label">{{ form.time.label }}</label>
+                        {{ form.time }}
+                        {% if form.time.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.time.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Location -->
+                <div>
+                    <label class="label">{{ form.location.label }}</label>
+                    {{ form.location }}
+                    {% if form.location.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.location.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <label class="label">{{ form.category.label }}</label>
+                    {{ form.category }}
+                    {% if form.category.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.category.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Submit -->
+                <div class="flex justify-end space-x-4 pt-6">
+                    <a href="{% url 'event_list' %}" class="btn bg-gray-200 text-gray-800 hover:bg-gray-300">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn bg-indigo-600 text-white hover:bg-indigo-700">
+                        Save Event
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

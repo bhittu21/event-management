@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Participants - {{ event.name }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-10">
+    <!-- Back button -->
+    <a href="{% url 'event_detail' event.pk %}" class="inline-flex items-center space-x-3 text-indigo-600 hover:text-indigo-800 mb-8">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span class="font-medium">Back to {{ event.name }}</span>
+    </a>
+
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-xl shadow-md p-10">
+            <h1 class="text-2xl font-bold text-gray-800 mb-3">Manage Participants</h1>
+            <p class="text-gray-600 mb-8">{{ event.name }} - {{ event.date }}</p>
+
+            <form method="post" class="space-y-8">
+                {% csrf_token %}
+
+                <!-- Participants -->
+                <div>
+                    <label class="label">Select Participants</label>
+                    <div class="mt-4 space-y-3 max-h-96 overflow-y-auto">
+                        {% for participant in form.participants.field.queryset %}
+                            <label class="flex items-center p-5 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" 
+                                       name="participants" 
+                                       value="{{ participant.id }}"
+                                       {% if participant in event.participants.all %}checked{% endif %}
+                                       class="h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500">
+                                <div class="ml-4">
+                                    <p class="font-medium text-gray-800 text-lg">{{ participant.name }}</p>
+                                    <p class="text-base text-gray-500">{{ participant.email }}</p>
+                                </div>
+                            </label>
+                        {% empty %}
+                            <p class="text-gray-500 text-center py-6">No participants available. 
+                                <a href="{% url 'participant_create' %}" class="text-indigo-600 hover:text-indigo-800">Create one</a>
+                            </p>
+                        {% endfor %}
+                    </div>
+                    {% if form.participants.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.participants.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Submit -->
+                <div class="flex justify-end space-x-4 pt-6">
+                    <a href="{% url 'event_detail' event.pk %}" class="btn bg-gray-200 text-gray-800 hover:bg-gray-300">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn bg-indigo-600 text-white hover:bg-indigo-700">
+                        Save Participants
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

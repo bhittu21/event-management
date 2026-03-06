@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-10">
+    <h1 class="text-3xl font-bold text-gray-800 mb-10">Organizer Dashboard</h1>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+        <!-- Total Participants -->
+        <a href="?filter=all" class="bg-white rounded-xl shadow-md p-8 hover:shadow-xl transition cursor-pointer
+            {% if filter_type == 'all' %}ring-2 ring-indigo-500{% endif %}">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 uppercase font-medium">Total Participants</p>
+                    <p class="text-4xl font-bold text-gray-800 mt-3">{{ total_participants }}</p>
+                </div>
+                <div class="w-14 h-14 rounded-full bg-indigo-100 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </div>
+            </div>
+        </a>
+
+        <!-- Total Events -->
+        <a href="?filter=all" class="bg-white rounded-xl shadow-md p-8 hover:shadow-xl transition cursor-pointer
+            {% if filter_type == 'all' %}ring-2 ring-indigo-500{% endif %}">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 uppercase font-medium">Total Events</p>
+                    <p class="text-4xl font-bold text-gray-800 mt-3">{{ total_events }}</p>
+                </div>
+                <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+            </div>
+        </a>
+
+        <!-- Past Events -->
+        <a href="?filter=past" class="bg-white rounded-xl shadow-md p-8 hover:shadow-xl transition cursor-pointer
+            {% if filter_type == 'past' %}ring-2 ring-indigo-500{% endif %}">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 uppercase font-medium">Past Events</p>
+                    <p class="text-4xl font-bold text-gray-800 mt-3">{{ past_events_count }}</p>
+                </div>
+                <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+        </a>
+
+        <!-- Upcoming Events -->
+        <a href="?filter=upcoming" class="bg-white rounded-xl shadow-md p-8 hover:shadow-xl transition cursor-pointer
+            {% if filter_type == 'upcoming' %}ring-2 ring-indigo-500{% endif %}">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 uppercase font-medium">Upcoming Events</p>
+                    <p class="text-4xl font-bold text-gray-800 mt-3">{{ upcoming_events_count }}</p>
+                </div>
+                <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Today's Events -->
+    <div class="bg-white rounded-xl shadow-md p-8 mb-10">
+        <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Today's Events - {{ today }}
+        </h2>
+        
+        {% if today_events %}
+            <div class="space-y-5">
+                {% for event in today_events %}
+                    <div class="flex items-center justify-between p-6 bg-indigo-50 rounded-lg">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 text-lg">{{ event.name }}</h3>
+                            <p class="text-sm text-gray-600 mt-1">{{ event.time }} - {{ event.location }}</p>
+                        </div>
+                        <a href="{% url 'event_detail' event.pk %}" class="btn bg-indigo-600 text-white hover:bg-indigo-700 text-sm">
+                            View
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-10 text-gray-500">
+                <p class="text-lg">No events scheduled for today.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Filtered Events Display -->
+    <div class="bg-white rounded-xl shadow-md p-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-6">
+            {% if filter_type == 'past' %}Past Events
+            {% elif filter_type == 'upcoming' %}Upcoming Events
+            {% elif filter_type == 'today' %}Today's Events
+            {% else %}All Events{% endif %}
+        </h2>
+
+        {% if display_events %}
+            <div class="space-y-5">
+                {% for event in display_events %}
+                    <div class="flex items-center justify-between p-6 border border-gray-200 rounded-lg hover:bg-gray-50">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-800 text-lg">{{ event.name }}</h3>
+                            <div class="flex items-center space-x-5 text-sm text-gray-500 mt-2">
+                                <span class="font-medium">{{ event.date }}</span>
+                                <span>{{ event.time }}</span>
+                                <span>{{ event.location }}</span>
+                                {% if event.category %}
+                                    <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded text-xs">
+                                        {{ event.category.name }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <a href="{% url 'event_detail' event.pk %}" class="text-indigo-600 hover:text-indigo-800 font-medium ml-4">
+                            View Details
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-10 text-gray-500">
+                <p class="text-lg">No events found.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

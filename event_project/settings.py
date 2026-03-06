@@ -42,10 +42,13 @@ INSTALLED_APPS = [
     # Third party apps
     'tailwind',
     'theme',
-    'debug_toolbar',
     # Local apps
     'events',
 ]
+
+# Only include debug_toolbar in DEBUG mode
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
 
 # Only include debug_toolbar in DEBUG mode
 if DEBUG:
@@ -63,8 +66,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+# Only include debug_toolbar middleware in DEBUG mode
+if DEBUG:
+    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ROOT_URLCONF = 'event_project.urls'
 

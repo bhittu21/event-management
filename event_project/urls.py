@@ -9,8 +9,11 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('events.urls')),
-    path('__debug__/', include('debug_toolbar.urls')),
 ]
+
+# Only include debug_toolbar in DEBUG mode
+if settings.DEBUG:
+    urlpatterns.append(path('__debug__/', include('debug_toolbar.urls')))
 
 # Serve media files in development
 if settings.DEBUG:

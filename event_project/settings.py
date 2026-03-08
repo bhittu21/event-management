@@ -5,13 +5,16 @@ Django settings for event_project project - Production Ready
 import os
 import dj_database_url
 from pathlib import Path
+import logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # For production, use environment variable
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-_zm=hq4yg(qeg4o#7&v%$q)spra0zv)@hk5dzpa#1el(1v7r(-')
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY environment variable is not set. Please set it before deploying to production.")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
@@ -29,6 +32,9 @@ if RENDER_EXTERNAL_URL:
     except:
         pass
 
+# Also allow health check endpoint
+ALLOWED_HOSTS.append('health')
+
 
 # Application definition
 
@@ -45,10 +51,6 @@ INSTALLED_APPS = [
     # Local apps
     'events',
 ]
-
-# Only include debug_toolbar in DEBUG mode
-if DEBUG:
-    INSTALLED_APPS.append('debug_toolbar')
 
 # Only include debug_toolbar in DEBUG mode
 if DEBUG:

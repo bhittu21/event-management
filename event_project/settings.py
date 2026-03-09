@@ -12,12 +12,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # For production, use environment variable
-SECRET_KEY = os.environ.get('SECRET_KEY')
-if not SECRET_KEY:
-    raise ValueError("SECRET_KEY environment variable is not set. Please set it before deploying to production.")
+# Generate a secure key using: python -c "import secrets; print(secrets.token_urlsafe(50))"
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-development-key-not-for-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+# Default to True for local development, set to 'False' in production
+DEBUG = os.environ.get('DEBUG', 'True').strip().lower() in ('true', '1', 'yes')
+
+# Use the strict check only in production (when DEBUG is False and using default key)
+if not DEBUG and SECRET_KEY == 'django-insecure-development-key-not-for-production':
+    raise ValueError("SECRET_KEY environment variable is not set. Please set it before deploying to production.")
 
 # ALLOWED_HOSTS configuration for deployment
 # Add your Render app URL when deploying
